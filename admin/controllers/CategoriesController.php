@@ -7,8 +7,8 @@
 			$this->loadView("ListCategory.php");
 		}
 		public function ListCategory(){
-			if(isset($_GET['searchString'])){
-			$name=$_GET['searchString'];
+			if(isset($_POST['searchString'])){
+			$name=$_POST['searchString'];
 			}
 			else
 			{
@@ -22,7 +22,7 @@
 		}
 		
 		public function Add(){
-			$catId=$_GET['catId'];
+			$catId=$_POST['catId'];
 			$add=$this->insert_category($catId);
 			return $add;
 		}
@@ -30,7 +30,7 @@
 			$this->loadView("EditCategory.php");
 		}
 		public function Edit($id){
-			$catId=$_GET['catId'];
+			$catId=$_POST['catId'];
 			$edit=$this->update_category($catId,$id);
 			return $edit;
 		}

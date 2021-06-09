@@ -4,7 +4,7 @@ include "Layout/header.php";
 <?php
 $cat = new CategoriesController();
 $list_category = $cat->list_category();
-if (isset($_GET['catId'])) {
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $add = $cat->Add();
 }
 ?>
@@ -21,7 +21,7 @@ if (isset($_GET['catId'])) {
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
-                    <form action="">
+                    <form action="" method="POST">
                         <div class="box box-default">
                             <div class="box-header with-border">
                                 <h3 class="box-title">Thêm mới </h3><br/>
@@ -35,8 +35,6 @@ if (isset($_GET['catId'])) {
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="hidden" name="controller" value="Categories" />
-                                            <input type="hidden" name="action" value="indexAdd" />
                                             <label for="name">Danh mục món ăn</label>
                                             <select class="form-control" name="catId">
                                                 

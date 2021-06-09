@@ -9,10 +9,17 @@ include "Layout/header.php";
 <div class="content-wrapper">
     <?php $dc = new DiscountCodeController();
     $show_dc = $dc->ListDiscountCode();
-    if (isset($_GET['catId'])) {
-        $del = $dc->Delete($_GET['catId']);
+    if (isset($_GET['discountId'])) {
+        $del = $dc->Delete();
     }
+    if (isset($_POST['searchString'])) {
+        $name = $_POST['searchString'];
+    } else {
+        $name = "";
+    }
+    $dc_count = $dc->list_all($name)
     ?>
+  
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
@@ -27,12 +34,10 @@ include "Layout/header.php";
                 <div class="box">
                     <div class="box-body">
 
-                        <form action="">
+                        <form action="" method="POST">
                             <div class="row">
                                 <div>
                                     <div class="new_input-form">
-                                        <input type="hidden" name="controller" value="DiscountCode" />
-                                        <input type="hidden" name="action" value="index" />
                                         <input type="text" name="searchString" />
 
                                     </div>
@@ -43,10 +48,13 @@ include "Layout/header.php";
                             </div>
                         </form>
                         <?php
+                        
                         if (isset($del)) {
                             echo $del;
                             echo '<br/>';
-                        } ?>
+                            $show_dc = $dc->ListDiscountCode();
+                        } 
+                        ?>
                         <a href="/manage_food/admin/index.php?controller=DiscountCode&action=indexAdd">Thêm mới</a>
 
                         <div class="card-block table-border-style">
@@ -77,12 +85,12 @@ include "Layout/header.php";
                                                     <td><?php echo $result['details']; ?></td>
                                                     <td><?php echo $result['typeName']; ?></td>
                                                     <td>
-                                                        <a href="/manage_food/admin/index.php?controller=Categories&action=indexEdit&Id=<?php echo $result['catId']; ?>">
+                                                        <a href="/manage_food/admin/index.php?controller=DiscountCode&action=indexEdit&Id=<?php echo $result['discountId']; ?>">
                                                             <span class="glyphicon glyphicon-edit">
                                                             </span>
                                                         </a>
 
-                                                        <a href="/manage_food/admin/index.php?controller=Categories&action=index&catId=<?php echo $result['catId']; ?>" onclick="return confirm('Bạn chắc chắn muốn xóa?')">
+                                                        <a href="/manage_food/admin/index.php?controller=DiscountCode&action=index&discountId=<?php echo $result['discountId']; ?>" onclick="return confirm('Bạn chắc chắn muốn xóa?')">
                                                             <span class="glyphicon glyphicon-trash"></span>
                                                         </a>
                                                     </td>
@@ -99,15 +107,15 @@ include "Layout/header.php";
                                 <div class="col-sm-12 col-md-7">
                                     <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
                                         <ul class="pagination">
-                                            <li class="paginate_button page-item previous" id="example1_previous">
-                                                <a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
-                                            </li>
-                                            <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0" class="page-link">1</a>
-                                            </li>
-                                            <li class="paginate_button page-item active"><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
-                                            <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
-                                            <li class="paginate_button page-item next" id="example1_next"><a href="#" aria-controls="example1" data-dt-idx="4" tabindex="0" class="page-link">Next</a></li>
-                                        </ul>
+                                        <?php
+                                            if ($dc_count) {
+                                                $count = mysqli_num_rows($dc_count);
+                                                $count_page = ceil($count / 10); //ceil làm tròn
+                                                for ($i = 1; $i <= $count_page; $i++) {
+                                                    echo '<li class="paginate_button page-item "><a href="/manage_food/admin/index.php?controller=dcegories&action=index&page=' . $i . '" class="page-link">' . $i . '</a></li>';
+                                            }}
+                                            
+                                            ?> 
                                     </div>
                                 </div>
                             </div>

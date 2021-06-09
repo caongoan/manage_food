@@ -4,7 +4,7 @@ include "Layout/header.php";
 <?php
 $dc = new DiscountCodeController();
 $list_type = $dc->list_code_type();
-if (isset($_GET['discountCode'])) {
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $add = $dc->Add();
 }
 ?>
@@ -21,9 +21,7 @@ if (isset($_GET['discountCode'])) {
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
-                    <form action="">
-                        <input type="hidden" name="controller" value="DiscountCode" />
-                        <input type="hidden" name="action" value="indexAdd" />
+                    <form action="" method="POST">
                         <div class="box box-default">
                             <div class="box-header with-border">
                                 <h3 class="box-title">Thêm mới </h3><br />
@@ -47,10 +45,10 @@ if (isset($_GET['discountCode'])) {
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="name">Lượng giảm</label>
-                                        <input type="text" class="form-control" placeholder="Nhập lượng giảm..." name="details" />
-                                    </div>
+                                        <div class="form-group">
+                                            <label for="name">Lượng giảm</label>
+                                            <input type="text" class="form-control" placeholder="Nhập lượng giảm..." name="details" />
+                                        </div>
                                         <div class="form-group">
 
                                             <label for="name">Loại mã giảm giá</label>

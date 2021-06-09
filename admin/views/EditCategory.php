@@ -6,7 +6,7 @@ $cat = new CategoriesController();
 $list_category = $cat->list_category();
 $id=$_GET['Id'];
 $category_by_name=$cat->category_by_id($id);
-if (isset($_GET['catId'])) {
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $edit = $cat->Edit($id);
 }
 ?>
@@ -23,7 +23,7 @@ if (isset($_GET['catId'])) {
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
-                    <form>
+                    <form method="POST">
                         <div class="box box-default">
                             <div class="box-header with-border">
                                 <h3 class="box-title">Sửa</h3>
@@ -63,10 +63,7 @@ if (isset($_GET['catId'])) {
                                                 }
                                                 ?>
                                             </select>
-                                            <input type="hidden" name="Id" value="<?php echo $id ;?>" />
-                                            <input type="hidden" name="controller" value="Categories" />
-                                            <input type="hidden" name="action" value="indexEdit" />
-                                            
+                                            <input type="hidden" name="Id" value="<?php echo $id ;?>" />                   
                                         </div>
                                         <!-- /.form-group -->
                                     </div>

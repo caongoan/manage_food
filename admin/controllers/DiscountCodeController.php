@@ -7,8 +7,8 @@
 			$this->loadView("ListDiscountCode.php");
 		}
 		public function ListDiscountCode(){
-			if(isset($_GET['searchString'])){
-			$name=$_GET['searchString'];
+			if(isset($_POST['searchString'])){
+			$name=$_POST['searchString'];
 			}
 			else
 			{
@@ -22,24 +22,28 @@
 		}
 		
 		public function Add(){
-			$discountCode=$_GET['discountCode'];
-            $amount=$_GET['amount'];
-            $typeId=$_GET['typeId'];
-            $details=$_GET['details'];
+			$discountCode=$_POST['discountCode'];
+            $amount=$_POST['amount'];
+            $typeId=$_POST['typeId'];
+            $details=$_POST['details'];
 			$add=$this->insert_discount_code($discountCode,$amount,$typeId,$details);
 			return $add;
 		}
 		public function indexEdit(){
-			$this->loadView("EditCategory.php");
+			$this->loadView("EditDiscountCode.php");
 		}
-		public function Edit($id){
-			$catId=$_GET['catId'];
-			$edit=$this->update_category($catId,$id);
+		public function Edit(){
+			$id=$_POST['Id'];
+			$discountCode=$_POST['discountCode'];
+			$amount=$_POST['amount'];
+			$details=$_POST['details'];
+			$typeId=$_POST['typeId'];
+			$edit=$this->update_discount_code($id,$discountCode,$amount,$details,$typeId);
 			return $edit;
 		}
-		public function Delete($catId){
-			
-			$del=$this->delete_category($catId);
+		public function Delete(){
+			$discountId=$_GET['discountId'];
+			$del=$this->delete_discount_code($discountId);
 			return $del;
 		}
 		//edit

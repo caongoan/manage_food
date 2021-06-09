@@ -16,14 +16,36 @@ trait CategoriesModel
 	}
 	public function show_category($name)
 	{
-		$query = "SELECT * FROM category,category_saler WHERE category.catId=category_saler.catId AND category_saler.AdminId='+$this->id+' AND catName LIKE N'%" . $name . "%' ";
+		$amount=10;
+			if(!isset($_GET['page']))
+		   {
+			   $page=1;
+		   }
+		   else
+		   {
+			   $page=$_GET['page'];
+		   }
+		   $each_page=($page-1)*$amount;
+		$query = "SELECT * FROM category,category_saler WHERE category.catId=category_saler.catId AND category_saler.AdminId='+$this->id+' AND catName LIKE N'%" . $name . "%' LIMIT $each_page,$amount ";
 		$result = $this->db->select($query);
 		return $result;
 	}
-	
+	public function list_all($name)
+	{
+		if($name=='')
+        {
+            $query = "SELECT * FROM category,category_saler WHERE category.catId=category_saler.catId AND category_saler.AdminId='+$this->id+'";
+        }
+        else
+        {
+			$query = "SELECT * FROM category,category_saler WHERE category.catId=category_saler.catId AND category_saler.AdminId='+$this->id+' AND catName LIKE N'%" . $name . "%' ";
+        }
+		$result = $this->db->select($query);
+		return $result;
+	}
 	public function list_category()
 	{
-		$query = "SELECT * FROM category WHERE catId NOT IN (SELECT catId FROM category_saler)";
+		$query = "SELECT * FROM category WHERE catId NOT IN (SELECT catId FROM category_saler where AdminId='+$this->id+')";
 		$result = $this->db->select($query);
 		return $result;
 	}
@@ -86,7 +108,7 @@ trait CategoriesModel
 			$alert = "<span class='success'>Xóa danh mục thành công</span>";
 			return $alert;
 		} else {
-			$alert = "<span class='success'>Xóa danh mục không thành công</span>";
+			$alert = "<span class='error'>Xóa danh mục không thành công</span>";
 			return $alert;
 		}
 	}

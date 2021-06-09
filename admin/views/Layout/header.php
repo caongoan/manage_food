@@ -1,6 +1,14 @@
 <?php
 include "../config/session.php";
-Session::checkSession();
+include_once "controllers/AccountController.php";
+Session::checkSession();//kiểm tra sự tồn tại của phiên làm việc
+?>
+<?php
+$ac = new AccountController();
+$pr = $ac->profile_detail();
+if ($pr) {
+$result = $pr->fetch_assoc();}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,8 +46,16 @@ Session::checkSession();
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
     <style>
+    
 .wrapper {
     top: -20px;
+    height: 100%;
+}
+.main-footer
+{
+    position: absolute;
+    width: 100%;
+    bottom: 0;
 }
 </style>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -111,16 +127,17 @@ Session::checkSession();
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="assets/dist/img/26219765_153092935338641_7804066461055097235_n.jpg" class="img-circle" alt="User Image" style="width: 18px;">
-                                <span class="hidden-xs">Mr.Hiếu</span>
+                                <img src="uploads/<?php echo $result['images'] ?>" class="img-circle" alt="User Image" style="width: 18px;">
+                                
+                                <span class="hidden-xs"><?php echo $result['AdminName']; ?></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                    <img src="assets/dist/img/26219765_153092935338641_7804066461055097235_n.jpg" class="img-circle" alt="User Image">
+                                    <img src="uploads/<?php echo $result['images'] ?>" class="img-circle" alt="User Image">
 
                                     <p>
-                                        Mr.Hiếu-Admin
+                                    <?php echo $result['AdminName']; ?>
 
                                     </p>
                                 </li>
@@ -128,10 +145,10 @@ Session::checkSession();
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="/Admin/AdminProfile/Detail" class="btn btn-default btn-flat">Hồ sơ</a>
+                                        <a href="/manage_food/admin/index.php?controller=Account&action=Profile" class="btn btn-default btn-flat">Hồ sơ</a>
                                     </div>
                                     <div class="pull-left" style="margin-left:5px;">
-                                        <a href="/Admin/Changepassword/newPassword" class="btn btn-default btn-flat">Đổi mật khẩu</a>
+                                        <a href="/manage_food/admin/index.php?controller=Account&action=indexChangePass" class="btn btn-default btn-flat">Đổi mật khẩu</a>
                                     </div>
 
                                     <div class="pull-right">
@@ -155,10 +172,10 @@ Session::checkSession();
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="assets/dist/img/26219765_153092935338641_7804066461055097235_n.jpg" class="img-circle" alt="User Image">
+                <img src="uploads/<?php echo $result['images'] ?>" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p>Mr.Hiếu</p>
+                <p><?php echo $result['AdminName']; ?></p>
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
@@ -178,7 +195,7 @@ Session::checkSession();
         <ul class="sidebar-menu">
             <li class="header">QUẢN LÝ</li>
             <li class="active treeview">
-                <a href="/Admin">
+                <a href="">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
             </li>
@@ -196,12 +213,12 @@ Session::checkSession();
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-star"></i>
-                    <span>Thương hiệu sản phẩm</span>
+                    <span>Món ăn</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/Admin/Brand/Brandadd"><i class="fa fa-circle-o"></i>Thêm thương hiệu</a></li>
-                    <li><a href="/Admin/Brand/Brandlist"><i class="fa fa-circle-o"></i>Danh sách thương hiệu</a></li>
+                    <li><a href="/manage_food/admin/index.php?controller=Dish&action=indexAdd"><i class="fa fa-circle-o"></i>Thêm món ăn</a></li>
+                    <li><a href="/manage_food/admin/index.php?controller=Dish&action=index"><i class="fa fa-circle-o"></i>Danh sách món ăn</a></li>
 
                 </ul>
             </li>
@@ -216,38 +233,32 @@ Session::checkSession();
                     <li><a href="/manage_food/admin/index.php?controller=DiscountCode&action=index"><i class="fa fa-circle-o"></i>Danh sách mã giảm giá</a></li>
                 </ul>
             </li>
-
-            <li>
-                <a href="/Admin/Warehouse">
-                    <i class="fa fa-home"></i><span>Kho hàng</span>
-
-                </a>
-            </li>
-
+            
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-file-powerpoint-o"></i><span>Quản lý slider</span>
+                    <i class="fa fa-file-powerpoint-o"></i><span>Thay đổi giá món ăn</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/Admin/Slider/AddSlider"><i class="fa fa-circle-o"></i>Thêm slider</a></li>
-                    <li><a href="/Admin/Slider/Sliderlist"><i class="fa fa-circle-o"></i>Tất cả slider</a></li>
+                    <li><a href="/manage_food/admin/index.php?controller=Promotion&action=indexAdd"><i class="fa fa-circle-o"></i>Thêm mới </a></li>
+                    <li><a href="/manage_food/admin/index.php?controller=Promotion&action=index"><i class="fa fa-circle-o"></i>Danh sách </a></li>
 
                 </ul>
             </li>
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-newspaper-o"></i><span>Quản lý tin tức</span>
+                    <i class="fa fa-file-powerpoint-o"></i><span>Thống kê</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="/Admin/News/AddNews"><i class="fa fa-circle-o"></i>Thêm tin tức</a></li>
-                    <li><a href="/Admin/News/Newslist"><i class="fa fa-circle-o"></i>Tất cả tin tức</a></li>
+                    <li><a href="/manage_food/admin/index.php?controller=Statistical&action=indexManySales"><i class="fa fa-circle-o"></i>Món ăn bán chạy trong tháng </a></li>
+                    <li><a href="/manage_food/admin/index.php?controller=Statistical&action=indexRevenue"><i class="fa fa-circle-o"></i>Thống kê doanh thu tháng</a></li>
+
                 </ul>
             </li>
-            <li><a href="/Admin/Customer/UserProfile"><i class="fa fa-book"></i> <span>Hồ sơ người dùng</span></a></li>
+            
             <li class="header">ĐƠN HÀNG</li>
-            <li><a href="/Admin/Order"><i class="fa fa-envelope"></i> <span>Đơn hàng</span></a></li>
+            <li><a href="/manage_food/admin/index.php?controller=Order&action=index"><i class="fa fa-envelope"></i> <span>Đơn hàng</span></a></li>
             
 
         </ul>

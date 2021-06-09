@@ -12,14 +12,12 @@ class LoginController extends Controller
 	}
 	//khi an nut submit -> se den action=checkLogin
 	public function checkLogin()
-	{
-		//goi ham modelCheckLogin de kiem tra
-		
+	{		//goi ham modelCheckLogin de kiem tra	
 		$check = $this->login_admin();
 		if ($check) {
 			header("Location:/manage_food/admin/index.php?controller=Home&action=index");
 		} else {
-			header("Location:/manage_food/admin/index.php?controller=login");
+			return "Tên đăng nhập hoặc mật khẩu không chính xác";
 		}
 	}
 	//ham thuc hien dang xuat
@@ -29,4 +27,20 @@ class LoginController extends Controller
 		Session::destroy();
 		header("Location:/manage_food/admin/index.php?controller=login");
 	}
+	public function register()
+	{
+		$this->loadView("Register.php");
+	}
+	public function AddAdmin()
+	{
+		    $AdminName=$_POST['AdminName'];
+            $StoreName=$_POST['StoreName'];
+            $AdminEmail=$_POST['AdminEmail'];
+            $AdminPass=$_POST['AdminPass'];
+			$Address=$_POST['Address'];
+			$RetypePass=$_POST['RetypePass'];
+			$add=$this->insert_admin($AdminName,$StoreName,$AdminEmail,$AdminPass,$Address,$RetypePass);
+			return $add;
+	}
+	
 }

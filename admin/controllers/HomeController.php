@@ -7,7 +7,7 @@
 
 		}
 		public function index(){
-			$this->loadView("welcome.php");
+			$this->loadView("Home.php");
 		}
 	}
  ?>
